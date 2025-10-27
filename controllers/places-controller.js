@@ -1,0 +1,56 @@
+import { v4 as uuidv4 } from 'uuid'
+import HttpError from '../models/http-error.js'
+
+const DUMMY_PLACES = [
+    {
+        id: 'p1',
+        title: 'Empire State Building',
+        description: 'Famous Sky Scrappers',
+        location: {
+            lat: 40.23423,
+            long: -231334
+        },
+        address: 'NewYork, NY 10001',
+        creator: 'u1'
+    }
+]
+
+export const getPlaceById = (req, res, next) => {
+    const pid = req.params.pid
+    const place = DUMMY_PLACES.find(p => { return p.id === pid})
+    
+    if(!place) {
+        throw new HttpError('Could not find a place with the provided ID', 404)
+    }
+
+    res.json({ place })
+}
+
+export const getPlaceByUserId = (req, res, next) => {
+    const uid = req.params.uid
+    const place = DUMMY_PLACES.find(p => { return p.creator === uid})
+    
+    if(!place) {
+        throw new HttpError('Could not find a place with the provided user ID', 404)
+    }
+
+    res.json({ place })
+}
+
+
+export const createPlace = (req, res, next) => {
+    const { title, description, coordinates, address, creator } = req.body
+
+    const createdPlace = {
+        id: uuidv4(),
+        title,
+        description, 
+        location: coordinates,
+        address, creator
+    } 
+
+    DUMMY_PLACES.push(createdPlace)
+
+    res.status(201).json({ place: createdPlace })
+     
+}
