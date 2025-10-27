@@ -2,7 +2,6 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import placesRoutes from './routes/places-routes.js'
 import HttpError from './models/http-error.js'
-import HttpError from './models/http-error.js'
 
 const app = express()
 
