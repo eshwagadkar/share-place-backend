@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import HttpError from '../models/http-error.js'
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
     {
         id: 'p1',
         title: 'Empire State Building',
@@ -71,5 +71,7 @@ export const updatePlace = (req, res, next) => {
 }
 
 export const deletePlace = (req, res, next) => {
-
+    const placeId = req.params.pid
+    DUMMY_PLACES = DUMMY_PLACES.filter(p => p.id !== placeId)
+    res.status(200).json({ message: 'Deleted Place'})
 }
