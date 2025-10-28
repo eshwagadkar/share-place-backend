@@ -18,15 +18,27 @@ let DUMMY_PLACES = [
     }
 ]
 
-export const getPlaceById = (req, res, next) => {
+export const getPlaceById = async (req, res, next) => {
     const pid = req.params.pid
-    const place = DUMMY_PLACES.find(p => { return p.id === pid})
+
+    let place
+    try{
+      // findById is a static method and can be invoked directly and not over instance of Place  -
+      place = await Place.findById(pid) // - but directly on the Place constructor function
+    }catch(err){
+        const error = new HttpError(
+            err || 'Something went wrong, could not find a place.',
+            500
+        )
+        return next(error)
+    }
     
     if(!place) {
-        throw new HttpError('Could not find a place with the provided ID', 404)
+        const error = new HttpError('Could not find a place with the provided ID', 404)
+        return next(error)
     }
 
-    res.json({ place })
+    res.json({ place: place.toObject({ getters: true }) })
 }
 
 export const getPlacesByUserId = (req, res, next) => {
