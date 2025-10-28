@@ -6,7 +6,7 @@ configDotenv()
 const apikey = process.env.API_KEY
 
 export async function getCoordsForAddress(address) {
-    
+    console.log('api-key', apikey)
     const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apikey}`)
     
     const data = response.data

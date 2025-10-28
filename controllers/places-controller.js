@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import { getCoordsForAddress } from '../util/location.js'
+import Place from '../models/place.js'
 
 let DUMMY_PLACES = [
     {
@@ -56,16 +57,25 @@ export const createPlace = async (req, res, next) => {
       return next(error)
     }
 
-    const createdPlace = {
-        id: uuidv4(),
+    const createdPlace = new Place({
         title,
-        description, 
-        location: coordinates,
+        description,
         address,
+        location: coordinates,
+        image: 'dummy.png',
         creator
-    } 
+    })
 
-    DUMMY_PLACES.push(createdPlace)
+    try{
+        await createdPlace.save()
+    } catch(err){
+        const error = new HttpError(
+            err || 'Creating place failed, please try again.',
+            500
+        )
+        return next(error)
+    }
+
     res.status(201).json({ place: createdPlace })
 }
 
