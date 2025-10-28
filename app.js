@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import placesRoutes from './routes/places-routes.js'
 import usersRoutes from './routes/user-routes.js'
 import HttpError from './models/http-error.js'
+import mongoose from 'mongoose'
 
 const app = express()
 
@@ -26,5 +27,6 @@ app.use((error, req, res, next) => {
     res.json({ message: error.message || 'An unknown error occurred'})
 })
 
-
-app.listen(5001)
+mongoose.connect('mongodb+srv://eshwagadkar:1Zmcafwvy123@cluster0.zn1ive7.mongodb.net/?appName=Cluster0').then(
+    app.listen(5002)
+).catch(err => console.log(err))
