@@ -51,9 +51,7 @@ export const createPlace = (req, res, next) => {
     } 
 
     DUMMY_PLACES.push(createdPlace)
-
     res.status(201).json({ place: createdPlace })
-     
 }
 
 export const updatePlace = (req, res, next) => {

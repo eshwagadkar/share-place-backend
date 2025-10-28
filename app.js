@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import placesRoutes from './routes/places-routes.js'
+import usersRoutes from './routes/user-routes.js'
 import HttpError from './models/http-error.js'
 
 const app = express()
@@ -8,6 +9,7 @@ const app = express()
 app.use(bodyParser.json())
 
 app.use('/api/places', placesRoutes)
+app.use('/api/users', usersRoutes)
 
 // Handling errors for unsupported routes
 app.use((req, res, next) => {
