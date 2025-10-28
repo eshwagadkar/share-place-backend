@@ -18,6 +18,7 @@ let DUMMY_PLACES = [
     }
 ]
 
+// Controller to fetch a place given its ID
 export const getPlaceById = async (req, res, next) => {
     const pid = req.params.pid
 
@@ -26,10 +27,7 @@ export const getPlaceById = async (req, res, next) => {
       // findById is a static method and can be invoked directly and not over instance of Place  -
       place = await Place.findById(pid) // - but directly on the Place constructor function
     }catch(err){
-        const error = new HttpError(
-            err || 'Something went wrong, could not find a place.',
-            500
-        )
+        const error = new HttpError('Something went wrong, could not find a place.', 500)
         return next(error)
     }
     
@@ -41,18 +39,26 @@ export const getPlaceById = async (req, res, next) => {
     res.json({ place: place.toObject({ getters: true }) })
 }
 
-export const getPlacesByUserId = (req, res, next) => {
+// Controller to fetch all the places given its user ID or creator 
+export const getPlacesByUserId = async(req, res, next) => {
     const uid = req.params.uid
-    const places = DUMMY_PLACES.filter(p => { return p.creator === uid})
+
+    let places
+    try{
+      places = await Place.find({ creator: uid })
+    } catch(err) {
+      const error = new HttpError('Fetching places failed, please try again later', 500)
+      return next(error)
+    }
     
     if(!places || places.length === 0) {
         throw new HttpError('Could not find places for the provided user ID', 404)
     }
 
-    res.json({ places })
+    res.json({ places: places.map(p => p.toObject({ getters: true })) })
 }
 
-
+// Controller to create a place
 export const createPlace = async (req, res, next) => {
     const errors = validationResult(req)
 
@@ -74,17 +80,14 @@ export const createPlace = async (req, res, next) => {
         description,
         address,
         location: coordinates,
-        image: 'dummy.png',
+        image: 'place-holder-image.png',
         creator
     })
 
     try{
         await createdPlace.save()
     } catch(err){
-        const error = new HttpError(
-            err || 'Creating place failed, please try again.',
-            500
-        )
+        const error = new HttpError('Creating place failed, please try again.', 500)
         return next(error)
     }
 
