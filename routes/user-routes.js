@@ -1,14 +1,24 @@
-import express from 'express'
+import { Router } from 'express'
 import { getUsers, 
          signUp, 
          signIn 
 } from '../controllers/users-controller.js'
+ import { check } from 'express-validator'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', getUsers)
 
-router.post('/signup', signUp)
+router.post('/signup', [
+    check('name')
+    .not().isEmpty(),
+    check('email')
+    .normalizeEmail()
+    .isEmail(),
+    check('password')
+    .isLength({ min: 6 })
+
+], signUp)
 
 router.post('/signin', signIn)
 
