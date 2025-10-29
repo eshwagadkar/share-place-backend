@@ -1,4 +1,6 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
+const { Schema } = mongoose
+
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const userSchema = new Schema({ 
