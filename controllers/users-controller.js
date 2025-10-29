@@ -23,7 +23,7 @@ export const signUp = async (req, res, next) => {
         return next(error) 
     }
     
-    const { name, email, password, places } = req.body
+    const { name, email, password } = req.body
 
     let existingUser
 
@@ -44,7 +44,7 @@ export const signUp = async (req, res, next) => {
         email,
         password,
         image: 'dummy-image.png',
-        places
+        places: []
     })
 
     try{
