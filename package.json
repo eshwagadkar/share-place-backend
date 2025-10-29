@@ -24,7 +24,8 @@
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "express-validator": "^7.3.0",
-    "mongoose": "^8.19.2",
+    "mongoose": "^7.8.7",
+    "mongoose-unique-validator": "^4.0.1",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
