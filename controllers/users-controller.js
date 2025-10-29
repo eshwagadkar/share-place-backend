@@ -2,8 +2,17 @@ import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import User from '../models/user.js'
 
-export const getUsers = (req, res, next) => {
-    res.json({ users: DUMMY_USERS})
+export const getUsers = async (req, res, next) => {
+
+    let users 
+    try {
+        users = await User.find({}, '-password')
+    } catch(err) {
+        const error = new HttpError('Fetching users failed, please try again later', 500)
+        return next(error)
+    }
+
+    res.json({ users: users.map(user => user.toObject({ getters: true }))})
 }
 
 export const signUp = async (req, res, next) => {
