@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import { getCoordsForAddress } from '../util/location.js'
@@ -38,7 +37,7 @@ export const getPlacesByUserId = async(req, res, next) => {
     }
     
     if(!places || places.length === 0) {
-        throw new HttpError('Could not find places for the provided user ID', 404)
+        return next( new HttpError('Could not find places for the provided user ID', 404))
     }
 
     res.json({ places: places.map(p => p.toObject({ getters: true })) })
@@ -85,7 +84,7 @@ export const updatePlace = async (req, res, next) => {
     const errors = validationResult(req)
 
     if(!errors.isEmpty()){
-        throw new HttpError('Invalid inputs passed, please check your data', 422)
+        return next( new HttpError('Invalid inputs passed, please check your data', 422)) 
     }
 
     const { title, description } = req.body
