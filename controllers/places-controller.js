@@ -30,16 +30,17 @@ export const getPlaceById = async (req, res, next) => {
 export const getPlacesByUserId = async(req, res, next) => {
     const uid = req.params.uid
 
+    // let places
     let usersWithPlaces
     try{
-        // usersWithPlaces = await Place.find({ creator: uid })
+        // places = await Place.find({ creator: uid }) // Previous approach using Place model
          usersWithPlaces = await User.findById(uid).populate('places') // alternate approach using populate
     } catch(err) {
       const error = new HttpError('Fetching places failed, please try again later', 500)
       return next(error)
     }
 
-    
+    // if(!places || places.length === 0) - Previous approach check
     if(!usersWithPlaces || usersWithPlaces.places.length === 0) {
         return next( new HttpError('Could not find places for the provided user ID', 404))
     }
