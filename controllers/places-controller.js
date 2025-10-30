@@ -2,6 +2,8 @@ import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import { getCoordsForAddress } from '../util/location.js'
 import Place from '../models/place.js'
+import User from '../models/user.js'
+import mongoose from 'mongoose'
 
 // Controller to fetch a place given its ID
 export const getPlaceById = async (req, res, next) => {
@@ -61,21 +63,55 @@ export const createPlace = async (req, res, next) => {
     }
 
     const createdPlace = new Place({
-        title,
-        description,
-        address,
-        location: coordinates,
-        image: 'place-holder-image.png',
-        creator
+      title,
+      description,
+      address,
+      location: coordinates,
+      image: 'place-holder-image.png',
+      creator
     })
 
-    try{
-        await createdPlace.save()
+    // Check id of logged in user whether it exists in db
+    let user 
+    try{ 
+        user = await User.findById(creator)
     } catch(err){
         const error = new HttpError('Creating place failed, please try again.', 500)
         return next(error)
     }
 
+    console.log(user)
+
+    if(!user){
+        const error = new HttpError('Could not find a user for the provided id', 404)
+        return next(error)
+    }
+
+    let sess
+    try {
+        // Handling (2) mutiple async tasks concurrently. 
+        sess = await mongoose.startSession()
+        sess.startTransaction() // Start the transaction
+        // Task 1: Save the created user
+        await createdPlace.save({ session : sess })
+        // and push the created place id in the places array of the logged in user 
+        user.places.push(createdPlace)
+        // Task 2: save the updated user
+        await user.save({ session : sess })
+        await sess.commitTransaction() // Commit the transaction
+        sess.endSession()
+    } catch(err) {
+        if (sess) {
+            await sess.abortTransaction()
+            sess.endSession()
+        }
+
+        console.error('Transaction error:', err)
+        const error = new HttpError('Creating place failed, please try again', 500)
+        return next(error) 
+    }
+
+    // Send a response to end the request
     res.status(201).json({ place: createdPlace })
 }
 

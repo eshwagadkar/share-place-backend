@@ -43,7 +43,7 @@ export const signUp = async (req, res, next) => {
         name, 
         email,
         password,
-        image: 'dummy-image.png',
+        image: 'dummy-image-file.png',
         places: []
     })
 
