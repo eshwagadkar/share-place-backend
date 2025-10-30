@@ -169,9 +169,9 @@ export const deletePlace = async (req, res, next) => {
     try{
         sess = await mongoose.startSession()
         sess.startTransaction()
-        place.deleteOne({session: sess})
-        place.creator.places.pull(place) 
-        await place.creator.save({ session: sess})
+        place.deleteOne({session: sess}) // Delete the selected place 
+        place.creator.places.pull(place) // Remove the associated id links from the user document 
+        await place.creator.save({ session: sess}) // Save the creator
         await sess.commitTransaction() // Commit the transaction
         sess.endSession()
     }catch(err) {
