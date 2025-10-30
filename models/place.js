@@ -11,7 +11,7 @@ const placeSchema = new Schema({
         lng: { type: Number, required: true },
     },
     creator: { type: mongoose.Types.ObjectId, 
-               required: true, ref: 'User' },
+               required: true, ref: 'User' }
 })
 
 export default mongoose.model('Place', placeSchema)
