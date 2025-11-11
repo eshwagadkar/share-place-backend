@@ -22,6 +22,16 @@ const api = process.env.API_URL
 // Express Middleware to parse/handle incoming and outgoing requests
 app.use(express.json())
 
+
+// Handling CORS Errors
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Headers', 'Origin , X-Requested-With, Content-Type, Accept, Authorization' )
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT' )
+    next()
+})
+
+
 // Registering the imported routes as a middleware
 app.use(`${api}/places`, placesRoutes)
 
