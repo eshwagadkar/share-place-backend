@@ -20,6 +20,12 @@ router.post('/signup', [
 
 ], signUp)
 
-router.post('/signin', signIn)
+router.post('/signin', [
+     check('email')
+    .normalizeEmail()
+    .isEmail(),
+    check('password')
+    .isLength({ min: 6 })
+],signIn)
 
 export default router
