@@ -1,3 +1,4 @@
+import fs from 'fs'
 import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import { getCoordsForAddress } from '../util/location.js'
@@ -83,8 +84,6 @@ export const createPlace = async (req, res, next) => {
         return next(error)
     }
 
-    console.log(user)
-
     if(!user){
         const error = new HttpError('Could not find a user for the provided id', 404)
         return next(error)
@@ -168,6 +167,8 @@ export const deletePlace = async (req, res, next) => {
       return next(error)  
     }
 
+    const imagePath = place.image
+
     let sess
     try{
         sess = await mongoose.startSession()
@@ -187,6 +188,8 @@ export const deletePlace = async (req, res, next) => {
         const error = new HttpError('Deleting a place failed, something went wrong!', 500)
         return next(error) 
     }
+
+    fs.unlink(imagePath, err => { console.log(err) })
     
     res.status(200).json({ message: 'Deleted Place'})
 }
