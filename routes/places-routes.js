@@ -5,6 +5,7 @@
           updatePlace, 
           deletePlace
  } from '../controllers/places-controller.js'
+ import { fileUpload } from '../middleware/file-upload.js'
  import { check } from 'express-validator'
 
  const router = Router()
@@ -13,7 +14,9 @@
 
  router.get('/user/:uid', getPlacesByUserId)
 
- router.post('/', [
+ router.post('/', 
+   fileUpload.single('image'),
+   [
     check('title')
      .not()
      .isEmpty(),

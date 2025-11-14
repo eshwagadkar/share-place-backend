@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import express from 'express'
 import HttpError from './models/http-error.js'
 import { configDotenv } from 'dotenv'
@@ -22,6 +24,7 @@ const api = process.env.API_URL
 // Express Middleware to parse/handle incoming and outgoing requests
 app.use(express.json())
 
+app.use('/uploads/images', express.static(path.join('uploads', 'images')))
 
 // Handling CORS Errors
 app.use((req, res, next) => {
@@ -46,6 +49,11 @@ app.use((req, res, next) => {
 
 // error handling middleware
 app.use((error, req, res, next) => {
+
+    if(req.file) {
+        fs.unlink(req.file.path, (err) => {console.log(err)})
+    }
+
     if(res.headerSent) {
         return next(error)
     }

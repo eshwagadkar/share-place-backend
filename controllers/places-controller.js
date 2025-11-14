@@ -70,7 +70,7 @@ export const createPlace = async (req, res, next) => {
       description,
       address,
       location: coordinates,
-      image: 'place-holder-image.png',
+      image: req.file.path,
       creator
     })
 
