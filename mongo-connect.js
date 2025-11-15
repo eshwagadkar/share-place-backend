@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
 
 export const connectDB = (app) => {
+  // .connect(process.env.MONGO_CONNECTION_URI_DEV)
   mongoose
     .connect(process.env.MONGO_CONNECTION_URI_PROD)
     .then(() => {
       console.log('✅ Connection to Database: Successful')
-      app.listen(process.env.PORT, () => {
+      app.listen(process.env.PORT || 5000, () => {
         console.log(`🚀 Server is running on port ${process.env.PORT}`)
       })
     })
