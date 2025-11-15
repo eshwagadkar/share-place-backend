@@ -4,7 +4,7 @@ import HttpError from '../models/http-error.js'
 
 configDotenv()
 
-const apikey = process.env.GOOGLE_GEO_CODING_API_KEY
+const apikey = process.env.GOOGLE_API_KEY
 
 export async function getCoordsForAddress(address) {
     const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apikey}`)
