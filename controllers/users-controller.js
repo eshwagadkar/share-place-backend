@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import HttpError from '../models/http-error.js'
 import { validationResult } from 'express-validator'
 import User from '../models/user.js'
@@ -64,7 +65,21 @@ export const signUp = async (req, res, next) => {
         return next(error)
     }
 
-    res.status(201).json({ user: createdUser.toObject({ getters: true }) })
+    let token 
+    try{
+      token = jwt.sign({
+        userId: createdUser.id,
+        email: createdUser.email
+      },
+      'my-super-secret-key',
+      { expiresIn: '1h' }
+    )
+    } catch(err){
+      const error = new HttpError('Signup failed, please try again.', 500)
+      return next(error)
+    }
+
+    res.status(201).json({ userId: createdUser.id, email: createdUser.email, token })
 }
 
 export const signIn = async (req, res, next) => {
@@ -79,7 +94,6 @@ export const signIn = async (req, res, next) => {
       return next(error)
     }
       
-
     if(!existingUser) {
         return next( new HttpError('Invalid credentials, could not log you in.', 401))
     }
@@ -97,9 +111,20 @@ export const signIn = async (req, res, next) => {
         return next( new HttpError('Invalid credentials, could not log you in.', 401))
     }
 
-    res.json({ 
-        message: 'Logged In',
-        user: existingUser.toObject({ getters: true })
-     })
+    let token 
+    try{
+      token = jwt.sign({
+        userId: existingUser.id,
+        email: existingUser.email
+      },
+      'my-super-secret-key',
+      { expiresIn: '1h' }
+    )
+    } catch(err){
+      const error = new HttpError('Login failed, please try again.', 500)
+      return next(error)
+    }
+
+    res.json({ userId: existingUser.id, email: existingUser.email, token })
 }
 
