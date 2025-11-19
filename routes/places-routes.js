@@ -6,6 +6,8 @@
           deletePlace
  } from '../controllers/places-controller.js'
  import { fileUpload } from '../middleware/file-upload.js'
+ import { checkAuth } from '../middleware/check-auth.js'
+ 
  import { check } from 'express-validator'
 
  const router = Router()
@@ -13,6 +15,8 @@
  router.get('/:pid', getPlaceById)
 
  router.get('/user/:uid', getPlacesByUserId)
+
+ router.use(checkAuth)
 
  router.post('/', 
    fileUpload.single('image'),
