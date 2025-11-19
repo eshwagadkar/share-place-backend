@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 
 export function checkAuth(req, res, next) {
     try{
+        if(req.method === 'OPTIONS') { return next() }
+
         // Authorization header check
         if (!req.headers.authorization) { throw new Error('Authentication Failed!', 401) }
 
