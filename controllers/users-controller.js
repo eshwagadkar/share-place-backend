@@ -108,7 +108,7 @@ export const signIn = async (req, res, next) => {
     }
 
     if(!isPasswordValid) {
-        return next( new HttpError('Invalid credentials, could not log you in.', 401))
+        return next( new HttpError('Invalid credentials, could not log you in.', 403))
     }
 
     let token 
