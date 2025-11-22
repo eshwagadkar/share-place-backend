@@ -40,6 +40,13 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT']
 }))
 
+// ---------------------------------------
+// 🔥 Server Health check route 
+// ---------------------------------------
+app.get(`${api}/health`, (req, res) => {
+  res.status(200).json({ status: "ok" })
+})
+
 // Registering the imported routes as a middleware
 app.use(`${api}/places`, placesRoutes)
 
