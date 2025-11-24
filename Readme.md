@@ -30,10 +30,9 @@ Key features include: - JWT-based user authentication
 -   Pushed to **Docker Hub**:
     👉 **https://hub.docker.com/r/eshwagadkar/share-places**
 -   Hosted on an **AWS EC2 Free Tier -- Amazon Linux 64-bit** instance.
--   The container runs successfully on EC2, but **is not publicly
-    accessible yet** due to pending networking configuration.
+-   The container runs successfully on EC2, but requires additional network and security configuration before it can be integrated in the live frontend. 👉 🔗 https://share-my-places-app-c02a1.web.app/auth
 -   Therefore, the **frontend currently uses the Render-hosted backend
-    URL**.
+    URL**.   👉 **https://share-place-backend-i76p.onrender.com**
 
 ------------------------------------------------------------------------
 
