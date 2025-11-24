@@ -40,12 +40,74 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT']
 }))
 
-// ---------------------------------------
-// 🔥 Server Health check route 
-// ---------------------------------------
-app.get(`${api}/health`, (req, res) => {
-  res.status(200).json({ status: "ok" })
+// ➤ Root "/" route — Send description when API loads
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Share My Places API</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f7f7f7;
+                margin: 0;
+                padding: 40px;
+                color: #333;
+            }
+            .container {
+                max-width: 700px;
+                margin: auto;
+                background: #fff;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            h1 {
+                margin-top: 0;
+                color: #2c3e50;
+            }
+            p {
+                line-height: 1.6;
+            }
+            .endpoints {
+                margin-top: 20px;
+                padding: 15px;
+                background: #f0f0f0;
+                border-radius: 8px;
+            }
+            code {
+                background: #e8e8e8;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🌍 Share My Places API</h1>
+            <p>Welcome to the backend API for the <strong>Share My Places</strong> application!</p>
+            <p>
+                This server allows users to register, authenticate, upload images, and share their favorite places with others.
+            </p>
+
+            <div class="endpoints">
+                <h3>Available Endpoints</h3>
+                <p><code>${process.env.API_URL}/places</code> — Place-related API routes</p>
+                <p><code>${process.env.API_URL}/users</code> — User authentication</p>
+            </div>
+
+            <p style="margin-top: 25px; font-size: 14px; color: #777;">
+                Created with ❤️ using Node.js, Express & MongoDB
+            </p>
+        </div>
+    </body>
+    </html>
+  `)
 })
+
 
 // Registering the imported routes as a middleware
 app.use(`${api}/places`, placesRoutes)
