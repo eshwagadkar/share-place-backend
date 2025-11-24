@@ -37,7 +37,7 @@ Key features include: - JWT-based user authentication
 
 ------------------------------------------------------------------------
 
-## 📝 Development Timeline (Based on Git Logs)
+## 📝 Development Timeline 
 
 ### 🔹 Latest Updates
 
