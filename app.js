@@ -27,14 +27,6 @@ app.use(express.json())
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')))
 
-// Handling CORS Errors
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', 'https://share-my-places-app-c02a1.web.app')
-//     res.setHeader('Access-Control-Allow-Headers', 'Origin , X-Requested-With, Content-Type, Accept, Authorization' )
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT' )
-//     return next()
-// })
-
 app.use(cors({
   origin: 'https://share-my-places-app-c02a1.web.app',
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT']
@@ -107,7 +99,6 @@ app.get('/', (req, res) => {
     </html>
   `)
 })
-
 
 // Registering the imported routes as a middleware
 app.use(`${api}/places`, placesRoutes)
