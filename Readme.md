@@ -60,16 +60,14 @@ Key features include: - JWT-based user authentication
 -   MongoDB models for Users & Places
 -   Mongoose session-based transactions
 -   User--Place relationships
--   Unique validation + mongoose version fixes
 
 ------------------------------------------------------------------------
 
 ### 🖼 File Uploads
 
 -   Multer configuration for image uploads
--   Static image serving
+-   Static image serving route
 -   Image deletion on place removal
--   Updated `.gitignore` to exclude uploads
 
 ------------------------------------------------------------------------
 
@@ -85,7 +83,6 @@ Key features include: - JWT-based user authentication
 ### ⚙ Server Enhancements
 
 -   Express server setup
--   Replaced body-parser with express.json()
 -   CORS configuration updated
 -   Refinements to routes, middleware, and error handling
 
@@ -102,7 +99,7 @@ Key features include: - JWT-based user authentication
   File Uploads        Multer
   Validation          express-validator
   Geocoding           Google Maps API
-  Deployment          Docker + AWS EC2 and Render
+  Deployment          Docker + AWS EC2 and Render (temporary)
   Registry            Docker Hub
 
 ------------------------------------------------------------------------
